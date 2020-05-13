@@ -9,6 +9,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const errorMsg = document.getElementById("modal-message")
   const heartBtns = document.getElementsByClassName('like-glyph')
   modal.className = "hidden"
+
+  function changeHeart(heart){
+    if(heart.classList.contains('activated-heart')){
+      heart.innerText = EMPTY_HEART
+      heart.classList.remove("activated-heart")
+    }
+    else {
+      heart.innerText = FULL_HEART
+      heart.classList.add("activated-heart")
+    }
+  }
+
+  for(button of heartBtns){
+    button.addEventListener("click", (event) => {
+      mimicServerCall()
+      .then(changeHeart(event.target))
+      .catch(function(error) {
+        errorMsg.innerText = error.message
+        modal.classList.remove("hidden")
+        setTimeout(function(){  modal.classList.add("hidden")}, 5000);
+      })
+    })
+}
 })
 
 
